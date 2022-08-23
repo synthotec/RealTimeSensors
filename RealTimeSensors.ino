@@ -1,7 +1,10 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
+#define VERSION 1
 #define ONE_WIRE_BUS 4
+
+
 
 
 OneWire OneWire(ONE_WIRE_BUS);
@@ -18,7 +21,10 @@ void setup(void)
 
 void loop(void){
   TemperatureSensors.requestTemperatures();
-String outputString = "{\"TemperatureSensors\":[";
+String outputString = "{\"Version\":";
+outputString+=VERSION;
+
+outputString+="\"TemperatureSensors\":[";
 TemperatureSensors.begin();
   for (int index = 0; index < TemperatureSensors.getDeviceCount(); index++)
     {
