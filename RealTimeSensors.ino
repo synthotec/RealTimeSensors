@@ -3,13 +3,17 @@
 
 #define ONE_WIRE_BUS 4
 
-OneWire OneWire(ONE_WIRE_BUS);
 
+OneWire OneWire(ONE_WIRE_BUS);
 DallasTemperature TemperatureSensors(&OneWire);
+
+int LED = 2;
+
 
 void setup(void)
 {
   Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop(void){
@@ -35,9 +39,9 @@ TemperatureSensors.begin();
   Serial.println(outputString);
   
   digitalWrite(LED_BUILTIN, LOW); 
-  delay(800);
+  delay(500);
   digitalWrite(LED_BUILTIN, HIGH);
-  delay(200);
+  delay(500);
 
 
 }
