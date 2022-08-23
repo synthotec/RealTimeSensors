@@ -1,34 +1,32 @@
-//James Prince string thermometers Tool temp monitoring.//
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
 #define ONE_WIRE_BUS 4
 
-OneWire oneWire(ONE_WIRE_BUS);
+OneWire OneWire(ONE_WIRE_BUS);
 
-DallasTemperature sensors(&oneWire);
+DallasTemperature TemperatureSensors(&OneWire);
 
 void setup(void)
 {
   Serial.begin(115200);
-  sensors.begin();
 }
 
 void loop(void){
-  sensors.requestTemperatures();
+  TemperatureSensors.requestTemperatures();
 String outputString = "{\"TemperatureSensors\":[";
-sensors.begin();
-  for (uint8_t i = 0; i < sensors.getDeviceCount(); i++)
+TemperatureSensors.begin();
+  for (int index = 0; index < TemperatureSensors.getDeviceCount(); index++)
     {
-    float tempC = sensors.getTempCByIndex(i);
+    float tempC = TemperatureSensors.getTempCByIndex(index);
 
-      if(i>0)
+      if(index>0)
         {
         outputString+=",";
         }
         
       outputString+="{\"Index\":";
-      outputString+=i;
+      outputString+=index;
       outputString+=", \"CelciusValue\":";
       outputString+=tempC;
       outputString+="}";      
@@ -37,9 +35,9 @@ sensors.begin();
   Serial.println(outputString);
   
   digitalWrite(LED_BUILTIN, LOW); 
-  delay(500);
+  delay(800);
   digitalWrite(LED_BUILTIN, HIGH);
-  delay(500);
+  delay(200);
 
 
 }
