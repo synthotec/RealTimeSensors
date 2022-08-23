@@ -35,5 +35,11 @@ sensors.begin();
     }
   outputString+="]}";
   Serial.println(outputString);
-  delay(1000);
+  
+  digitalWrite(LED_BUILTIN, LOW); 
+  delay(500);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
+
+
 }
