@@ -1,12 +1,12 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define Version 7
+#define Version 11
 
 //######### ZONE SETUP ##########
 #define PinCount 1
 int PinNumbers[] = {D2}; // Add multiple entries in this format: {D1, D2, D3}
-int ZoneNumbers[] = {0};	 // Add multiple entries in this format: {0, 1, 2}
+int ZoneNumbers[] = {0}; // Add multiple entries in this format: {0, 1, 2}
 //########## ZONE SETUP ##########
 
 OneWire OneWires[PinCount];
@@ -25,49 +25,59 @@ void setup(void)
 	Serial.begin(115200);
 }
 
+bool ErrorOccurred;
+
 void loop(void)
 {
 
-	String JsonString = "{\"TemperatureZones\":[";
+	ErrorOccurred = false;
+
+	String JsonString = "{\"Version\":";
+	JsonString += Version;
+	JsonString += ",\"TemperatureSensors\":[";
+
+	int TotalSensorIndex = 0;
 
 	for (int PinIndex = 0; PinIndex <= (PinCount - 1); PinIndex++)
 	{
-
-		if (PinIndex > 0)
-		{
-			JsonString += ",";
-		}
-
-		JsonString += "{\"Zone\":";
-		JsonString += ZoneNumbers[PinIndex];
-		JsonString += ", \"Sensors\":[";
-
 		DallasTemperatures[PinIndex].begin();
 		DallasTemperatures[PinIndex].requestTemperatures();
 
-		for (uint8_t SensorIndex = 0; SensorIndex < DallasTemperatures[PinIndex].getDeviceCount(); SensorIndex++)
+		for (int SensorIndex = 0; SensorIndex < DallasTemperatures[PinIndex].getDeviceCount(); SensorIndex++)
 		{
 
-			if (SensorIndex > 0)
+			if (TotalSensorIndex > 0)
 			{
 				JsonString += ",";
 			}
 
 			JsonString += "{\"Index\":";
-			JsonString += SensorIndex;
+			JsonString += TotalSensorIndex;
+
+			JsonString += ", \"Zone\":";
+			JsonString += ZoneNumbers[PinIndex];
+
+			float TempC = DallasTemperatures[PinIndex].getTempCByIndex(SensorIndex);
+
+			if (TempC <= -127)
+			{
+				ErrorOccurred = true;
+			}
 
 			JsonString += ", \"CelciusValue\":";
-			JsonString += DallasTemperatures[PinIndex].getTempCByIndex(SensorIndex);
-			JsonString += "}";
-		}
-		JsonString += "]}";
-	}
+			JsonString += TempC;
 
-	JsonString += "]";
-	JsonString += ",\"Version\":";
-	JsonString += Version;
-	JsonString += "}";
-	Serial.println(JsonString);
+			JsonString += "}";
+
+			TotalSensorIndex++;
+		}
+	}
+	JsonString += "]}";
+
+	if (!ErrorOccurred)
+	{
+		Serial.println(JsonString);
+	}
 
 	digitalWrite(LED_BUILTIN, LOW);
 	delay(1000);
