@@ -1,7 +1,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define Version 11
+#define Version 12
 
 //######### ZONE SETUP ##########
 #define PinCount 1
