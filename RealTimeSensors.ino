@@ -7,7 +7,7 @@
 #define PinCount 5
 int PinNumbers[] = { D2, D3, D4, D5, D6 }; // Add multiple entries in this format: {D1, D2, D3}
 int ZoneNumbers[] = { 0, 1, 2, 3, 4 }; // Add multiple entries in this format: {0, 1, 2}
-string ZoneNames[] = {"No Zones","Water In","Water Out","Fixed Half","Moving Half"}
+String ZoneNames[] = {"No Zones","Water In","Water Out","Fixed Half","Moving Half"};
 // Z0 - No Zones / Water In + Water Out %DEPRECATED%
 // Z1 = Water In
 // Z2 = Water Out
