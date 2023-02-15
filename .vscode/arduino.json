@@ -3,5 +3,5 @@
     "board": "esp8266:esp8266:d1_mini",
     "sketch": "RealTimeSensors.ino",
     "output": "../ArduinoOutput",
-    "port": "COM5"
+    "port": "COM6"
 }
