@@ -1,7 +1,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define Version 17
+#define Version 18
 
 //######### ZONE SETUP ##########
 #define PinCount 5
@@ -75,7 +75,7 @@ void loop(void)
 				ErrorOccurred = true;
 			}
 
-			JsonString += ", \"CelciusValue\":";
+			JsonString += ", \"CelsiusValue\":";
 			JsonString += TempC;
 
 			JsonString += "}";
