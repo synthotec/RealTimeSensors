@@ -1,7 +1,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define Version 18
+#define Version 19
 
 //######### ZONE SETUP ##########
 #define PinCount 5
@@ -70,7 +70,7 @@ void loop(void)
 
 			float TempC = DallasTemperatures[PinIndex].getTempCByIndex(SensorIndex);
 
-			if (TempC <= -127)
+			if ((TempC <= -127) || (TempC <= 85))
 			{
 				ErrorOccurred = true;
 			}
@@ -91,7 +91,7 @@ void loop(void)
 	}
 
 	digitalWrite(LED_BUILTIN, LOW);
-	delay(1000);
+	delay(5000);
 	digitalWrite(LED_BUILTIN, HIGH);
 	delay(1000);
 }
